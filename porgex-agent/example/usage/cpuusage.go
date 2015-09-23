@@ -166,7 +166,7 @@ func main() {
 
 	var previousCpu = cStats.CPUStats.CPUUsage.TotalUsage
 
-	time.Sleep(time.Second * 2)
+	time.Sleep(time.Second * 5)
 
 	err1 := SetCpuUsage(id, cStats)
 
