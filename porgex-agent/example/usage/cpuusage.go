@@ -86,7 +86,7 @@ func GetCpuUsage(uuid string, stats *models.AppCpuStats) error {
 	return nil
 }
 
-func getUsageUint(path, param string) uint64, error {
+func getUsageUint(path, param string) (uint64, error) {
 
 	contents, err := ioutil.ReadFile(filepath.Join(path, param))
 
