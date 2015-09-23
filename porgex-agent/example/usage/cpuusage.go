@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/lucasjo/porgex/porgex-agent/models"
 	"github.com/lucasjo/porgex/porgex-agent/system"
@@ -63,7 +64,7 @@ func GetCpuUsageStat(path string) (uint64, uint64, error) {
 
 }
 
-func GetCpuUsage(uuid string, stats *models.AppCpuStats) error {
+func SetCpuUsage(uuid string, stats *models.AppCpuStats) error {
 
 	appCgroupPath := filepath.Join(appCpuAcctPath, uuid)
 
@@ -79,15 +80,22 @@ func GetCpuUsage(uuid string, stats *models.AppCpuStats) error {
 		fmt.Errorf("Error : ", err)
 		return err
 	}
-	fmt.Printf("totalUsage %v\n", totalUsage)
+
+	perCpuUsage, err := getPercpuUsage(appCgroupPath)
+
+	if err != nil {
+		return err
+	}
+
 	stats.CPUStats.CPUUsage.TotalUsage = totalUsage
-	fmt.Printf("systemModeUsage %v\n", systemModeUsage)
 	stats.CPUStats.CPUUsage.UsageInSytemmode = systemModeUsage
-	fmt.Printf("userModeUsage %v\n", userModeUsage)
 	stats.CPUStats.CPUUsage.UsageInUsermode = userModeUsage
+	stats.CPUStats.CPUUsage.PercpuUsage = perCpuUsage
 
 	return nil
 }
+
+
 
 func getUsageUint(path, param string) (uint64, error) {
 
@@ -99,6 +107,22 @@ func getUsageUint(path, param string) (uint64, error) {
 
 	return ParseUint(strings.TrimSpace(string(contents)), 10, 64)
 
+}
+
+func getPercpuUsage(path string) ([]uint64, error) {
+	percpuUsage := []uint64{}
+	data, err := ioutil.ReadFile(filepath.Join(path, "cpuacct.usage_percpu"))
+	if err != nil {
+		return percpuUsage, err
+	}
+	for _, value := range strings.Fields(string(data)) {
+		value, err := strconv.ParseUint(value, 10, 64)
+		if err != nil {
+			return percpuUsage, fmt.Errorf("Unable to convert param value to uint64: %s", err)
+		}
+		percpuUsage = append(percpuUsage, value)
+	}
+	return percpuUsage, nil
 }
 
 func ParseUint(s string, base, bitSize int) (uint64, error) {
@@ -117,17 +141,55 @@ func ParseUint(s string, base, bitSize int) (uint64, error) {
 	return value, err
 }
 
+func calculateCPUPercent(previousCPU uint64, v *models.AppCpuStats) float64) {
+
+	var cpuPercnt = 0.0
+
+	cpuPercent = (previousCpu / v.CPUStats.CPUUsage.TotalUsage) / float64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
+
+	return cpuPercent
+	
+
+
+}
+
+func calculateCPUPercent(previousCPU, previousSystem uint64, v *models.AppCpuStats) float64 {
+	var (
+		cpuPercent = 0.0
+		// calculate the change for the cpu usage of the container in between readings
+		cpuDelta = float64(v.CPUStats.CPUUsage.TotalUsage - previousCPU)
+		// calculate the change for the entire system between readings
+		
+	)
+
+	if systemDelta > 0.0 && cpuDelta > 0.0 {
+		cpuPercent = (cpuDelta / systemDelta) * float64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
+	}
+	return cpuPercent
+}
+
 func main() {
 	id := "55ee3a460f5106ab680000ca"
 
 	var cStats = &models.AppCpuStats{}
 
-	err := GetCpuUsage(id, cStats)
+	err := SetCpuUsage(id, cStats)
 
 	if err != nil {
 		fmt.Errorf("error message : ", err)
 	}
 
-	fmt.Printf("stats %v", cStats)
+	var previousCpu = cStats.CPUStats.CPUUsage.TotalUsage
+	
+
+	time.Sleep(time.Second * 2)
+
+	err := SetCpuUsage(id, cStats)
+
+	cpuPer := calculateCPUPercent(previousCpu, cStats)
+
+
+
+	fmt.Printf("stats %v", cpuPer)
 
 }
