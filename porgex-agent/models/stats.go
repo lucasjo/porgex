@@ -10,7 +10,10 @@ type CPUUsage struct {
 	PercpuUsage []uint64 `json:"percpu_usage"`
 	// Time spent by tasks of the cgroup in kernel mode.
 	// Units: nanoseconds.
-
+	UsageInSytemmode uint64 `json:"usage_in_kernelmode"`
+	// Time spent by tasks of the cgroup in user mode.
+	// Units: nanoseconds.
+	UsageInUsermode uint64 `json:"usage_in_usermode"`
 }
 
 // CPUStats aggregates and wraps all CPU related info of container

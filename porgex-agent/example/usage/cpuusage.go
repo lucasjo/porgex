@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/lucasjo/porgex/porgex-agent/models"
 	"github.com/lucasjo/porgex/porgex-agent/system"
 )
 
@@ -62,13 +63,66 @@ func GetCpuUsageStat(path string) (uint64, uint64, error) {
 
 }
 
+func GetCpuUsage(uuid string, stats *models.AppCpuStats) error {
+
+	appCgroupPath := filepath.Join(appCpuAcctPath, uuid)
+
+	userModeUsage, systemModeUsage, err := GetCpuUsageStat(appCgroupPath)
+
+	if err != nil {
+		return err
+	}
+
+	totalUsage, err := getUsageUint(appCgroupPath, "cpuacct.usage")
+
+	if err != nil {
+		return err
+	}
+
+	stats.CPUStats.CPUUsage.TotalUsage = totalUsage
+	stats.CPUStats.CPUUsage.UsageInSytemmode = systemModeUsage
+	stats.CPUStats.CPUUsage.UsageInUsermode = userModeUsage
+
+	return nil
+}
+
+func getUsageUint(path, param string) uint64, error {
+
+	contents, err := ioutil.ReadFile(filepath.Join(path, param))
+
+	if err != nil {
+		return 0, err
+	}
+
+	return ParseUint(strings.TrimSpace(string(contents)), 10, 64)
+
+}
+
+func ParseUint(s string, base, bitSize int) (uint64, error) {
+	value, err := strconv.ParseUint(s, base, bitSize)
+	if err != nil {
+		intValue, intErr := strconv.ParseInt(s, base, bitSize)
+
+		if intErr == nil && intValue < 0 {
+			return 0, nil
+
+		} else if intErr != nil && intErr.(*strconv.NumError).Err == strconv.ErrRange && intValue < 0 {
+			return 0, nil
+		}
+		return value, err
+	}
+	return value, err
+}
+
 func main() {
 	id := "55ee3a460f5106ab680000ca"
 
 	appCgroupPath := filepath.Join(appCpuAcctPath, id)
 
-	user, system, _ := GetCpuUsageStat(appCgroupPath)
+	var stats *models.AppCpustats
 
-	fmt.Printf("user %v , system %v", user, system)
+	GetCpuUsage(id, stats)
+
+	fmt.Printf("stats %v", stats)
 
 }
