@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"path/filepath"
 	"strings"
 
@@ -29,7 +30,7 @@ func GetCpuUsageStat(path string) (uint64, uint64, error) {
 	// user <usage in ticks>
 	// system <usage in ticks>
 
-	data, err := ioutil.RedaFile(filepath.Join(path, cpuacctStat))
+	data, err := ioutil.ReadFile(filepath.Join(path, cpuacctStat))
 
 	if err != nil {
 		return 0, 0, err
