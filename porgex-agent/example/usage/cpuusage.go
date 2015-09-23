@@ -143,7 +143,7 @@ func calculateCPUPercent(previousCpu uint64, v *models.AppCpuStats) float64 {
 
 	var cpuPercnt = 0.0
 
-	cpuPercnt = (previousCpu / v.CPUStats.CPUUsage.TotalUsage) / uint64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
+	cpuPercnt = (float64(previousCpu) / float64(v.CPUStats.CPUUsage.TotalUsage)) / flat64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
 
 	return cpuPercnt
 
