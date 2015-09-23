@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/lucasjo/porgex/porgex-agent/system"
@@ -43,7 +44,21 @@ func GetCpuUsageStat(path string) (uint64, uint64, error) {
 		return 0, 0, fmt.Errorf("failure - %s is expected to have 4 fields", filepath.Join(path, cpuacctStat))
 	}
 
-	return 0, 0, nil
+	if fields[0] != userField {
+		return 0, 0, fmt.Errorf("unexpected field %q in %q, expected %q", fields[0], cgroupCpuacctStat, userField)
+	}
+	if fields[2] != systemField {
+		return 0, 0, fmt.Errorf("unexpected field %q in %q, expected %q", fields[2], cgroupCpuacctStat, systemField)
+	}
+	if userModeUsage, err = strconv.ParseUint(fields[1], 10, 64); err != nil {
+		return 0, 0, err
+	}
+
+	if systemModeUsage, err = strconv.ParseUint(fields[3], 10, 64); err != nil {
+		return 0, 0, err
+	}
+
+	return (userModeUsage * nanosecondsInSecond) / clockTicks, (systemModeUsage * nanosecondsInSecond) / clockTicks, nil
 
 }
 
