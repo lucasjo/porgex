@@ -67,6 +67,8 @@ func main() {
 
 	appCgroupPath := filepath.Join(appCpuAcctPath, id)
 
-	user, system, err := GetCpuUsageStat(appCgroupPath)
+	user, system, _ := GetCpuUsageStat(appCgroupPath)
+
+	fmt.Printf("user %v , system %v", user, system)
 
 }
