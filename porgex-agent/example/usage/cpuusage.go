@@ -36,7 +36,8 @@ func GetCpuUsageStat(path string) (uint64, uint64, error) {
 		return 0, 0, err
 	}
 	fields := strings.Fields(string(data))
-	fmt.PrintF("fields : %v ", fields)
+
+	fmt.Printf("fields %v : ", fields)
 
 	if len(fields) != 4 {
 		return 0, 0, fmt.Errorf("failure - %s is expected to have 4 fields", filepath.Join(path, cpuacctStat))
