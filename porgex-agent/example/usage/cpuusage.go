@@ -139,13 +139,13 @@ func ParseUint(s string, base, bitSize int) (uint64, error) {
 	return value, err
 }
 
-func calculateCPUPercent(previousCPU uint64, v *models.AppCpuStats) float64 {
+func calculateCPUPercent(previousCpu uint64, v *models.AppCpuStats) float64 {
 
 	var cpuPercnt = 0.0
 
-	cpuPercent = (previousCpu / v.CPUStats.CPUUsage.TotalUsage) / float64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
+	cpuPercnt = (previousCpu / v.CPUStats.CPUUsage.TotalUsage) / float64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
 
-	return cpuPercent
+	return cpuPercnt
 
 }
 
