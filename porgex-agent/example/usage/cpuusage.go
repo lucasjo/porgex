@@ -143,7 +143,7 @@ func calculateCPUPercent(previousCpu uint64, v *models.AppCpuStats) float64 {
 
 	var cpuPercnt = 0.0
 
-	cpuPercnt = (float64(previousCpu) / float64(v.CPUStats.CPUUsage.TotalUsage)) / flat64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
+	cpuPercnt = (float64(previousCpu) / float64(v.CPUStats.CPUUsage.TotalUsage)) / float64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
 
 	return cpuPercnt
 
@@ -164,10 +164,10 @@ func main() {
 
 	time.Sleep(time.Second * 2)
 
-	err := SetCpuUsage(id, cStats)
+	err1 := SetCpuUsage(id, cStats)
 
-	if err != nil {
-		fmt.Errorf("error message : ", err)
+	if err1 != nil {
+		fmt.Errorf("error message : ", err1)
 	}
 
 	cpuPer := calculateCPUPercent(previousCpu, cStats)
