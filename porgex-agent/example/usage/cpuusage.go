@@ -120,7 +120,7 @@ func ParseUint(s string, base, bitSize int) (uint64, error) {
 func main() {
 	id := "55ee3a460f5106ab680000ca"
 
-	var cStats *models.AppCpuStats
+	var cStats = &models.AppCpustats{}
 
 	err := GetCpuUsage(id, cStats)
 
