@@ -95,8 +95,6 @@ func SetCpuUsage(uuid string, stats *models.AppCpuStats) error {
 	return nil
 }
 
-
-
 func getUsageUint(path, param string) (uint64, error) {
 
 	contents, err := ioutil.ReadFile(filepath.Join(path, param))
@@ -141,31 +139,14 @@ func ParseUint(s string, base, bitSize int) (uint64, error) {
 	return value, err
 }
 
-func calculateCPUPercent(previousCPU uint64, v *models.AppCpuStats) float64) {
+func calculateCPUPercent(previousCPU uint64, v *models.AppCpuStats) float64 {
 
 	var cpuPercnt = 0.0
 
 	cpuPercent = (previousCpu / v.CPUStats.CPUUsage.TotalUsage) / float64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
 
 	return cpuPercent
-	
 
-
-}
-
-func calculateCPUPercent(previousCPU, previousSystem uint64, v *models.AppCpuStats) float64 {
-	var (
-		cpuPercent = 0.0
-		// calculate the change for the cpu usage of the container in between readings
-		cpuDelta = float64(v.CPUStats.CPUUsage.TotalUsage - previousCPU)
-		// calculate the change for the entire system between readings
-		
-	)
-
-	if systemDelta > 0.0 && cpuDelta > 0.0 {
-		cpuPercent = (cpuDelta / systemDelta) * float64(len(v.CPUStats.CPUUsage.PercpuUsage)) * 100.0
-	}
-	return cpuPercent
 }
 
 func main() {
@@ -180,7 +161,6 @@ func main() {
 	}
 
 	var previousCpu = cStats.CPUStats.CPUUsage.TotalUsage
-	
 
 	time.Sleep(time.Second * 2)
 
@@ -188,8 +168,6 @@ func main() {
 
 	cpuPer := calculateCPUPercent(previousCpu, cStats)
 
-
-
-	fmt.Printf("stats %v", cpuPer)
+	fmt.Printf("stats %v\n", cpuPer)
 
 }
