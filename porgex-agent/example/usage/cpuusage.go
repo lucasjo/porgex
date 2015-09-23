@@ -128,6 +128,6 @@ func main() {
 		fmt.Errorf("error message : ", err)
 	}
 
-	fmt.Printf("stats %v", stats)
+	fmt.Printf("stats %v", cStats)
 
 }
