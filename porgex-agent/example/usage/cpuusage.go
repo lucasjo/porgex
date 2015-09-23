@@ -117,7 +117,7 @@ func ParseUint(s string, base, bitSize int) (uint64, error) {
 func main() {
 	id := "55ee3a460f5106ab680000ca"
 
-	appCgroupPath := filepath.Join(appCpuAcctPath, id)
+	//appCgroupPath := filepath.Join(appCpuAcctPath, id)
 
 	var stats *models.AppCpuStats
 
