@@ -121,7 +121,11 @@ func main() {
 
 	var stats *models.AppCpustats
 
-	GetCpuUsage(id, stats)
+	err := GetCpuUsage(id, stats)
+
+	if err != nil {
+		fmt.Errorf("error message : ", err)
+	}
 
 	fmt.Printf("stats %v", stats)
 
