@@ -81,7 +81,9 @@ func GetCpuUsage(uuid string, stats *models.AppCpuStats) error {
 	}
 	fmt.Printf("totalUsage %v\n", totalUsage)
 	stats.CPUStats.CPUUsage.TotalUsage = totalUsage
+	fmt.Printf("systemModeUsage %v\n", systemModeUsage)
 	stats.CPUStats.CPUUsage.UsageInSytemmode = systemModeUsage
+	fmt.Printf("userModeUsage %v\n", userModeUsage)
 	stats.CPUStats.CPUUsage.UsageInUsermode = userModeUsage
 
 	return nil
@@ -120,7 +122,7 @@ func main() {
 
 	//appCgroupPath := filepath.Join(appCpuAcctPath, id)
 
-	var cStats *models.AppCpuStats
+	var cStats models.AppCpuStats
 
 	err := GetCpuUsage(id, cStats)
 
