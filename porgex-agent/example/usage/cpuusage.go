@@ -120,9 +120,9 @@ func main() {
 
 	//appCgroupPath := filepath.Join(appCpuAcctPath, id)
 
-	var stats *models.AppCpuStats
+	var cStats *models.AppCpuStats
 
-	err := GetCpuUsage(id, stats)
+	err := GetCpuUsage(id, cStats)
 
 	if err != nil {
 		fmt.Errorf("error message : ", err)
