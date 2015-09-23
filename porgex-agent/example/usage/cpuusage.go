@@ -43,6 +43,8 @@ func GetCpuUsageStat(path string) (uint64, uint64, error) {
 		return 0, 0, fmt.Errorf("failure - %s is expected to have 4 fields", filepath.Join(path, cpuacctStat))
 	}
 
+	return 0, 0, nil
+
 }
 
 func main() {
