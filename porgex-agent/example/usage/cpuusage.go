@@ -119,7 +119,7 @@ func main() {
 
 	appCgroupPath := filepath.Join(appCpuAcctPath, id)
 
-	var stats *models.AppCpustats
+	var stats *models.AppCpuStats
 
 	err := GetCpuUsage(id, stats)
 
