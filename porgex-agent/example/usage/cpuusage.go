@@ -145,7 +145,7 @@ func calculateCPUPercent(previousCpu uint64, v *models.AppCpuStats) float64 {
 
 	fmt.Printf("previous : %v , current : %v \n", previousCpu, v.CPUStats.CPUUsage.TotalUsage)
 
-	cpudeta := float64((v.CPUStats.CPUUsage.TotalUsage - previousCpu) / float64(1000000000))
+	cpudeta := float64((v.CPUStats.CPUUsage.TotalUsage - previousCpu)) / float64(1000000000)
 
 	cpuPercnt = (cpudeta / float64(len(v.CPUStats.CPUUsage.PercpuUsage))) * 100.0
 
