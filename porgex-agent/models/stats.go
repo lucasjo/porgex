@@ -7,7 +7,7 @@ type CPUUsage struct {
 	TotalUsage uint64 `json:"total_usage"`
 	// Total CPU time consumed per core.
 	// Units: nanoseconds.
-	PercpuUsage []uint64 `json:"percpu_usage"`
+	//PercpuUsage []uint64 `json:"percpu_usage"`
 	// Time spent by tasks of the cgroup in kernel mode.
 	// Units: nanoseconds.
 	UsageInSytemmode uint64 `json:"usage_in_kernelmode"`

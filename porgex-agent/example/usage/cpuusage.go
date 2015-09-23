@@ -39,7 +39,7 @@ func GetCpuUsageStat(path string) (uint64, uint64, error) {
 	}
 	fields := strings.Fields(string(data))
 
-	fmt.Printf("fields %v : ", fields)
+	fmt.Printf("fields : %v\n", fields)
 
 	if len(fields) != 4 {
 		return 0, 0, fmt.Errorf("failure - %s is expected to have 4 fields", filepath.Join(path, cpuacctStat))
@@ -76,9 +76,10 @@ func GetCpuUsage(uuid string, stats *models.AppCpuStats) error {
 	totalUsage, err := getUsageUint(appCgroupPath, "cpuacct.usage")
 
 	if err != nil {
+		fmt.Errorf("Error : ", err)
 		return err
 	}
-
+	fmt.Printf("totalUsage %v\n", totalUsage)
 	stats.CPUStats.CPUUsage.TotalUsage = totalUsage
 	stats.CPUStats.CPUUsage.UsageInSytemmode = systemModeUsage
 	stats.CPUStats.CPUUsage.UsageInUsermode = userModeUsage
