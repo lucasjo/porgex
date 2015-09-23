@@ -13,8 +13,8 @@ import (
 var appCpuAcctPath = "/cgroup/cpuacct/openshift/"
 
 const (
-	cpuacctStat        = "cpuacct.stat"
-	nanosecondInSecond = 1000000000
+	cpuacctStat         = "cpuacct.stat"
+	nanosecondsInSecond = 1000000000
 )
 
 var clockTicks = uint64(system.GetClockTicks())
@@ -45,10 +45,10 @@ func GetCpuUsageStat(path string) (uint64, uint64, error) {
 	}
 
 	if fields[0] != userField {
-		return 0, 0, fmt.Errorf("unexpected field %q in %q, expected %q", fields[0], cgroupCpuacctStat, userField)
+		return 0, 0, fmt.Errorf("unexpected field %q in %q, expected %q", fields[0], cpuacctStat, userField)
 	}
 	if fields[2] != systemField {
-		return 0, 0, fmt.Errorf("unexpected field %q in %q, expected %q", fields[2], cgroupCpuacctStat, systemField)
+		return 0, 0, fmt.Errorf("unexpected field %q in %q, expected %q", fields[2], cpuacctStat, systemField)
 	}
 	if userModeUsage, err = strconv.ParseUint(fields[1], 10, 64); err != nil {
 		return 0, 0, err
