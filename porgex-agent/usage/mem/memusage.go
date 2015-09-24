@@ -24,21 +24,21 @@ func SetMemoryStats(uuid string, v *models.AppStats) error {
 	maxUsagefile := strings.Join([]string{memstat, "max_usage_in_bytes"}, ".")
 	limitfile := strings.Join([]string{memstat, "limit_in_bytes"}, ".")
 
-	usageValue, err := usage.getUsageUint(cgroupPath, usagefile)
+	usageValue, err := usage.GetUsageUint(cgroupPath, usagefile)
 
 	if err != nil {
 		fmt.Errorf("failed to parse %s - %v\n", usagefile, err)
 		return err
 	}
 
-	maxUsageValue, err := usage.getUsageUint(cgroupPath, maxUsagefile)
+	maxUsageValue, err := usage.GetUsageUint(cgroupPath, maxUsagefile)
 
 	if err != nil {
 		fmt.Errorf("failed to parse %s - %v\n", maxUsagefile, err)
 		return err
 	}
 
-	limitValue, err := usage.getUsageUint(cgroupPath, limitfile)
+	limitValue, err := usage.GetUsageUint(cgroupPath, limitfile)
 
 	if err != nil {
 		fmt.Errorf("failed to parse %s - %v\n", limitfile, err)
