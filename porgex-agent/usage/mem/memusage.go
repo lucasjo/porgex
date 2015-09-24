@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/lucasjo/porgex/porgex-agent/models"
-	"github.com/lucasjo/porgex/porgex-agent/usage"
 )
 
 var AppMemCgroupPath = "/cgroup/memory/openshift/"
@@ -24,21 +23,21 @@ func SetMemoryStats(uuid string, v *models.AppStats) error {
 	maxUsagefile := strings.Join([]string{memstat, "max_usage_in_bytes"}, ".")
 	limitfile := strings.Join([]string{memstat, "limit_in_bytes"}, ".")
 
-	usageValue, err := usage.GetUsageUint(cgroupPath, usagefile)
+	usageValue, err := getUsageUint(cgroupPath, usagefile)
 
 	if err != nil {
 		fmt.Errorf("failed to parse %s - %v\n", usagefile, err)
 		return err
 	}
 
-	maxUsageValue, err := usage.GetUsageUint(cgroupPath, maxUsagefile)
+	maxUsageValue, err := getUsageUint(cgroupPath, maxUsagefile)
 
 	if err != nil {
 		fmt.Errorf("failed to parse %s - %v\n", maxUsagefile, err)
 		return err
 	}
 
-	limitValue, err := usage.GetUsageUint(cgroupPath, limitfile)
+	limitValue, err := getUsageUint(cgroupPath, limitfile)
 
 	if err != nil {
 		fmt.Errorf("failed to parse %s - %v\n", limitfile, err)
