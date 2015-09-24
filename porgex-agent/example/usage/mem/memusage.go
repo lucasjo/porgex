@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/lucasjo/porgex/porgex-agent/models"
-	"github.com/lucasjo/porgex/porgex-agent/usage"
+	"github.com/lucasjo/porgex/porgex-agent/usage/mem"
 )
 
 func main() {
