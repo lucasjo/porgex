@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func getUsageUint(path, param string) (uint64, error) {
+func GetUsageUint(path, param string) (uint64, error) {
 
 	contents, err := ioutil.ReadFile(filepath.Join(path, param))
 
