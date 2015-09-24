@@ -26,3 +26,15 @@ type AppCpuStats struct {
 	App      Application `json:"app"`
 	CPUStats CPUStats    `json:"cpu_stats,omitempty"`
 }
+
+type MemStats struct {
+	MaxUsage     uint64 `json:"max_usage"`
+	LimitUsage   uint64 `json:"limit_usage"`
+	CurrentUsage uint64 `json:"current_usage"`
+}
+
+type AppStats struct {
+	App      Application `json:"app"`
+	CPUStats CPUStats    `json:"cpu_stats,omitempty"`
+	MemStats MemStats    `json:"mem_stats, omitempty"`
+}
