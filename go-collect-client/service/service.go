@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/lucasjo/porgex/go-collect-client/db"
-	"github.com/lucasjo/porgex/porgex-agent/models"
+	"github.com/lucasjo/porgex/go-collect-server/models"
 )
 
 func GetServerApplication() []models.Application {

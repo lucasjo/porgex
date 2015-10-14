@@ -1,34 +1,28 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"net"
-	"os"
-	"time"
 
-	"github.com/lucasjo/porgex/go-collect-client/models"
-	"gopkg.in/mgo.v2/bson"
+	"github.com/lucasjo/porgex/go-collect-client/db"
+	"github.com/lucasjo/porgex/go-collect-client/service"
 )
 
 func main() {
-	
-		openshift node server test version
-		db.Init()
 
+	//openshift node server test version
+	db.Init()
 
-		apps := service.GetServerApplication()
+	apps := service.GetServerApplication()
 
-		if len(apps) > 0 {
-			for _, a := range apps {
-				fmt.Printf("app data : %v\n", a)
-			}
-		} else {
-			fmt.Println("application 이 없음")
+	if len(apps) > 0 {
+		for _, a := range apps {
+			fmt.Printf("app data : %v\n", a)
 		}
-	
+	} else {
+		fmt.Println("application 이 없음")
+	}
 
-	/* 이것은 최종적으로 client service 에 반영 되어야 한다 
+	/* 이것은 최종적으로 client service 에 반영 되어야 한다
 	conn, err := net.Dial("tcp", "127.0.0.1:3001")
 
 	if err != nil {
