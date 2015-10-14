@@ -1,0 +1,13 @@
+development:
+ database:
+  host: mongo.openpaas.co.kr
+  port: 27017
+  username: porgex_devel
+  password: porgex@123
+  dbname: porgex_devel
+ tcp:
+  port: :3001
+  host : 127.0.0.1
+ common:
+  logfile: /Users/kikimans/logs/porgex.log
+  loglevel: debug
